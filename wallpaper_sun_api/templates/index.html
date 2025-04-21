@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Imagens</title>
+</head>
+<body>
+    <h1>Envio de Imagens</h1>
+
+    <form id="uploadForm" enctype="multipart/form-data" method="POST">
+        <label for="file">Escolha uma imagem:</label>
+        <input type="file" name="file" id="file" required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <hr>
+
+<h2>Imagens Enviadas:</h2>
+<a href="/gallery">Acessar Galeria</a>
+
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('file');
+            formData.append("file", fileInput.files[0]);
+
+            fetch('http://ec2-54-209-140-78.compute-1.amazonaws.com:5000/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert("Imagem enviada com sucesso!");
+                    location.reload();  // Recarrega página pra mostrar imagem nova
+                } else {
+                    alert("Erro: " + data.error);
+                }
+            })
+            .catch(error => alert("Erro na requisição: " + error));
+        };
+
+        // Carrega imagens (aqui tá vazio, só template)
+        fetch('http://ec2-54-209-140-78.compute-1.amazonaws.com:5000/images')
+            .then(response => response.json())
+            .then(images => {
+                const imagesList = document.getElementById('images-list');
+                images.forEach(image => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = image.url;
+                    imgElement.alt = image.filename;
+                    imgElement.style.width = '300px';
+                    imagesList.appendChild(imgElement);
+                });
+            })
+            .catch(error => {
+                console.log("Erro ao carregar as imagens:", error);
+            });
+    </script>
+</body>
+</html>
