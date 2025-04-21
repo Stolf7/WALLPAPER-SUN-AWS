@@ -1,27 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeria de Imagens</title>
 </head>
 <body>
     <h1>Galeria de Imagens</h1>
-
-    <div id="images-list">
-        {% if images %}
-            {% for image in images %}
-                <div>
-                    <img src="{{ image }}" alt="Imagem" style="width: 300px; margin: 10px;">
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>Nenhuma imagem encontrada.</p>
-        {% endif %}
+    <a href="/">Voltar</a>
+    <div>
+        {% for img in images %}
+            <img src="{{ img }}" alt="Imagem" width="300" style="margin: 10px;">
+        {% endfor %}
     </div>
-
-    <hr>
-
-    <a href="/">Voltar para a Página Inicial</a>
 </body>
 </html>

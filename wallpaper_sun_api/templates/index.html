@@ -1,65 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload de Imagens</title>
+    <title>Wallpaper Sun Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f7f7f7;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 1rem;
+        }
+        #statusMessage {
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Envio de Imagens</h1>
 
-    <form id="uploadForm" enctype="multipart/form-data" method="POST">
-        <label for="file">Escolha uma imagem:</label>
-        <input type="file" name="file" id="file" required>
+    <h1>Faça Upload de Imagens - Wallpaper Sun</h1>
+
+    <form id="uploadForm">
+        <input type="file" name="file" id="fileInput" required>
         <button type="submit">Enviar</button>
     </form>
 
-    <hr>
-
-<h2>Imagens Enviadas:</h2>
-<a href="/gallery">Acessar Galeria</a>
-
+    <div id="statusMessage"></div>
+    <hr />
+    <p>
+        <a href="/gallery">Ver Galeria</a>
+    </p>
 
     <script>
-        document.getElementById('uploadForm').onsubmit = function(event) {
-            event.preventDefault();
+        document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
 
+            const fileInput = document.getElementById("fileInput");
             const formData = new FormData();
-            const fileInput = document.getElementById('file');
             formData.append("file", fileInput.files[0]);
 
-            fetch('http://ec2-54-209-140-78.compute-1.amazonaws.com:5000/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert("Imagem enviada com sucesso!");
-                    location.reload();  // Recarrega página pra mostrar imagem nova
-                } else {
-                    alert("Erro: " + data.error);
-                }
-            })
-            .catch(error => alert("Erro na requisição: " + error));
-        };
-
-        // Carrega imagens (aqui tá vazio, só template)
-        fetch('http://ec2-54-209-140-78.compute-1.amazonaws.com:5000/images')
-            .then(response => response.json())
-            .then(images => {
-                const imagesList = document.getElementById('images-list');
-                images.forEach(image => {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = image.url;
-                    imgElement.alt = image.filename;
-                    imgElement.style.width = '300px';
-                    imagesList.appendChild(imgElement);
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData,
                 });
-            })
-            .catch(error => {
-                console.log("Erro ao carregar as imagens:", error);
-            });
+
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById("statusMessage").innerHTML =
+                        `<p style="color:green;"> :) Upload realizado com sucesso!</p>`;
+                } else {
+                    document.getElementById("statusMessage").innerHTML =
+                        `<p style="color:red;">❌ Erro: ${data.error}</p>`;
+                }
+            } catch (error) {
+                document.getElementById("statusMessage").innerHTML =
+                    `<p style="color:red;">❌ Erro de rede: ${error.message}</p>`;
+            }
+        });
     </script>
+
 </body>
 </html>
