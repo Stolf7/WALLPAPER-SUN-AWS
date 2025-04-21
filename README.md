@@ -1,6 +1,6 @@
 <h1>Wallpaper Upload System</h1>
 
-<h2>Descrição</h2>
+<h2>Projeto na branch master</h2>
 <p>Este projeto permite que usuários enviem imagens para um armazenamento de objetos na nuvem (Amazon S3) e visualizem as imagens enviadas em uma galeria simples. A aplicação é construída com o framework Flask, utiliza AWS S3 para armazenamento de imagens, e DynamoDB para registro de logs de uploads.</p>
 
 <h2>Tecnologias Utilizadas</h2>
