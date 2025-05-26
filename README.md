@@ -35,3 +35,11 @@
 
 <h3>Logs de Upload</h3>
 <p>Informações sobre os uploads, como nome da imagem, URL e data de upload, são registradas em uma tabela no DynamoDB.</p>
+
+
+<h4>
+</p>Membros:</p>
+  </p>Matheus Stolf</p>
+  </p>Mateus Stringuetti</p>
+  </p>João Paulo</p>
+</h4>
